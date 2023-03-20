@@ -1,0 +1,77 @@
+LVM
+
+private String Name
+private String UUID
+
+
+constructor (name)
+UUID = UUID method
+
+All Getters
+
+-------------------------------------------------
+Phd extends LVM
+
+private int Size
+
+constructor (name , size)
+
+All Getters
+
+
+
+-------------------------------------------------
+
+Pv extends LVM
+
+private Phd PhdStorage;
+
+constructor (name, Phd)
+
+
+All Getters
+
+-------------------------------------------------
+
+Vg extends LVM
+
+private ArrayList Pvs
+
+Constructor (name,pv)
+Pvs.add pv
+
+
+pv add method
+
+get size method
+traverse Pvs, getPhd.getSize += sum
+return sum
+
+-------------------------------------------------
+
+Lv extends LVM
+
+private int Size
+
+Constructor (name, size, Vg,)
+
+
+-------------------------------------------------
+Runner
+import java.util.Scanner;
+Scanner s = new Scanner(System.in);
+String cmd =s.nextLine();
+
+while ans not "exit"
+
+- Install hard drives
+Obj a = new ()
+- List drives
+
+- Create physical volumes
+
+- List physical volumes
+- Create and extend volume groups
+- List volume groups
+- Create logical volumes
+- List logical volumes
