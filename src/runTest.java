@@ -1,10 +1,28 @@
 import java.util.Scanner;
-public class runner {
+public class runTest {
     public static void main(String[] args) {
 
         Scanner s = new Scanner(System.in);
         String cmd ="";
         Storage lvmStorage = new Storage();
+
+        lvmStorage.addPhd(new Phd("aa",100));
+        lvmStorage.addPhd(new Phd("bb",200));
+        lvmStorage.addPhd(new Phd("cc",300));
+
+        lvmStorage.addPv(new Pv("pv1",lvmStorage.getPhds().get(0)));
+        lvmStorage.addPv(new Pv("pv2",lvmStorage.getPhds().get(1)));
+        lvmStorage.addPv(new Pv("pv3",lvmStorage.getPhds().get(2)));
+
+        lvmStorage.addVg(new Vg("vg1",lvmStorage.getPvs().get(0)));
+        lvmStorage.getVgs().get(0).addPV(lvmStorage.getPvs().get(1));
+        lvmStorage.addVg(new Vg("vg2",lvmStorage.getPvs().get(2)));
+
+        lvmStorage.addLv(new Lv("lv1",100,lvmStorage.getVgs().get(0)));
+        lvmStorage.addLv(new Lv("lv2",150,lvmStorage.getVgs().get(0)));
+        lvmStorage.addLv(new Lv("lv3",30,lvmStorage.getVgs().get(0)));
+        lvmStorage.addLv(new Lv("lv4",250,lvmStorage.getVgs().get(1)));
+
 
         System.out.println("Welcome to the LVM system.");
         while (!cmd.equals("exit")){
@@ -16,7 +34,7 @@ public class runner {
                 int index = cmd.indexOf(" ");
                 if (!lvmStorage.phdNameTaken(cmd.substring(0,index))){
                     if (lvmStorage.addPhd(new Phd(cmd.substring(0,index),Integer.parseInt(cmd.substring(index+1,cmd.length()-1))))){
-                    System.out.println("Drive "+cmd.substring(0,index)+" installed");
+                        System.out.println("Drive "+cmd.substring(0,index)+" installed");
                     }
                 }
                 else System.out.println("Drive was not created");
@@ -24,7 +42,7 @@ public class runner {
             else if (cmd.contains("list drives")){
                 for (int i =0;i<lvmStorage.getPhds().size();i++){
                     System.out.println(lvmStorage.getPhds().get(i).getName() + " "+
-                            "["+lvmStorage.getPhds().get(i).getSize()+"G] ["+
+                            "["+lvmStorage.getPhds().get(i).getSize()+"G]["+
                             lvmStorage.getPhds().get(i).getUuid()+"]");
                 }
             }
@@ -41,7 +59,7 @@ public class runner {
                 if (phdObj != -1){
                     if (!lvmStorage.phdTaken(lvmStorage.getPhds().get(phdObj)) && !lvmStorage.pvNameTaken(cmd.substring(0,index))){
                         if (lvmStorage.addPv(new Pv(cmd.substring(0,index),lvmStorage.getPhds().get(phdObj)))){
-                        System.out.println(cmd.substring(0,index)+" created");
+                            System.out.println(cmd.substring(0,index)+" created");
                         }
                     }
                     else System.out.println(cmd.substring(0,index) +" was not created");
@@ -58,9 +76,9 @@ public class runner {
                     }
 
                     if (vgSlot != -1){
-                        System.out.println(lvmStorage.getPvs().get(i).getName() + " "+
-                                "["+lvmStorage.getPvs().get(i).getPhdStored().getSize()+"G] ["+ lvmStorage.getVgs().get(vgSlot).getName()+"] ["+
-                                lvmStorage.getPvs().get(i).getUuid()+"]");
+                    System.out.println(lvmStorage.getPvs().get(i).getName() + " "+
+                            "["+lvmStorage.getPvs().get(i).getPhdStored().getSize()+"G] ["+ lvmStorage.getVgs().get(vgSlot).getName()+"] ["+
+                            lvmStorage.getPvs().get(i).getUuid()+"]");
                     }
                     else    System.out.println(lvmStorage.getPvs().get(i).getName() + " "+
                             "["+lvmStorage.getPvs().get(i).getPhdStored().getSize()+"G] ["+
@@ -96,21 +114,21 @@ public class runner {
                     if (vgStr.equals(lvmStorage.getVgs().get(i).getName())){vgObj = i;}
                 }
                 if (vgObj != -1){
-                    int pvObj = -1;
-                    String pvStr = cmd.substring(index+1);
-                    for (int i=0;i<lvmStorage.getPvs().size();i++){
-                        if (pvStr.equals(lvmStorage.getPvs().get(i).getName())) {
-                            pvObj = i;
-                        }
+                int pvObj = -1;
+                String pvStr = cmd.substring(index+1);
+                for (int i=0;i<lvmStorage.getPvs().size();i++){
+                    if (pvStr.equals(lvmStorage.getPvs().get(i).getName())) {
+                        pvObj = i;
                     }
-                    if (pvObj != -1){
-                        if(!lvmStorage.pvTaken(lvmStorage.getPvs().get(pvObj))){
-                            lvmStorage.getVgs().get(vgObj).addPV(lvmStorage.getPvs().get(pvObj));
-                            System.out.println(pvStr + " added to "+vgStr);
-                        }
-                        else System.out.println(pvStr+" is already in a Vg");
+                }
+                if (pvObj != -1){
+                    if(!lvmStorage.pvTaken(lvmStorage.getPvs().get(pvObj))){
+                        lvmStorage.getVgs().get(vgObj).addPV(lvmStorage.getPvs().get(pvObj));
+                        System.out.println(pvStr + " added to "+vgStr);
                     }
-                    else System.out.println(pvStr+" was not found");
+                    System.out.println(pvStr+" is already in "+vgStr);
+                }
+                else System.out.println(pvStr+" was not found");
                 }
                 else System.out.println(vgStr+" was not found");
             }
@@ -153,7 +171,7 @@ public class runner {
                         {
                             if (lvmStorage.addLv(new Lv(cmd.substring(0,index),lvSize,lvmStorage.getVgs().get(vgObj))))
                             {
-                                System.out.println(cmd.substring(0,index)+" created");
+                            System.out.println(cmd.substring(0,index)+" created");
                             }
                         }
                         else System.out.println(cmd.substring(tempIndex+1)+" has insufficient space");
@@ -172,8 +190,7 @@ public class runner {
                 }
             }
 
-
-
+//lv1: [50G] [vg1] [uuid]
 
 
 

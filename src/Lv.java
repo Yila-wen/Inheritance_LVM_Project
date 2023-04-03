@@ -7,6 +7,7 @@ public class Lv extends LVM{
         super(name);
         this.size = size;
         this.host = host;
+        host.addLV(this);
 
     }
 

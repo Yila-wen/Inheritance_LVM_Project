@@ -5,6 +5,7 @@ private String UUID
 
 
 constructor (name)
+this.name = name
 UUID = UUID method
 
 All Getters
@@ -15,19 +16,20 @@ Phd extends LVM
 private int Size
 
 constructor (name , size)
+super name
+this.size = size
 
 All Getters
-
-
 
 -------------------------------------------------
 
 Pv extends LVM
 
-private Phd PhdStorage;
+private Phd PhdStored;
 
 constructor (name, Phd)
-
+super name
+this.PhdStored = phd
 
 All Getters
 
@@ -35,43 +37,95 @@ All Getters
 
 Vg extends LVM
 
-private ArrayList Pvs
+private ArrayList PV Pvs
+private ArrayList LV Lvs
 
 Constructor (name,pv)
-Pvs.add pv
+super name
+Initialize both ArrayList (Pvs , Lvs)
+this.Pvs.add pv
 
-
-pv add method
-
-get size method
-traverse Pvs, getPhd.getSize += sum
-return sum
+All Getters
 
 -------------------------------------------------
 
 Lv extends LVM
 
 private int Size
+private Vg Host
 
 Constructor (name, size, Vg,)
+super name
+this.size = size
+this.host = Vg
+host.addLv(this)
 
+All Getters
 
 -------------------------------------------------
+Storage
+
+private ArrayList for:
+Phd Phds
+Pv Pvs
+Vg Vgs
+Lv Lvs
+
+0 Param Constructor
+Initializes all instance variables
+
+phdNameTaken Method(String) - Checks if Name is already used
+phdTaken Method(Phd) - Checks if Phd is in another Pv already
+pvNameTaken Method(String)
+pvTaken Method(PV)
+vgNameTaken(String)
+lvNameTaken(String)
+
+Add method for all instance variables
+Getter method for all instance variables
+
+-------------------------------------------------
+
 Runner
 import java.util.Scanner;
 Scanner s = new Scanner(System.in);
 String cmd =s.nextLine();
+Storage lvmStorage = new
 
-while ans not "exit"
+Welcome User
+while cmd not "exit"
+(All creations will be put into lvmStorage)
 
-- Install hard drives
-Obj a = new ()
-- List drives
+-if "install drive "
+    Check if Name is taken
+        Install hard drives
+            Drive was Created / not Created
+-if "list drives"
+    List drives
+-if "pvcreate "
+    Check if Phd exists
+    Check if Phd is taken && if pv name is taken
+        Create Pv
+            Pv was Created / not Created
+-if "pvlist"
+    List physical volumes
+-if "vgcreate "
+     Check if pv exists
+     Check if pv is taken && if vg name is taken
+        Create Vg
+            Vg was created / not created
 
-- Create physical volumes
-
-- List physical volumes
-- Create and extend volume groups
-- List volume groups
-- Create logical volumes
-- List logical volumes
+-if "vgextend "
+    Check if vg exists
+    Check if pv exists
+        pv extends vg / pv is already in vg
+-if "vglist"
+    List volume groups
+-if "lvcreate"
+    Check if vg exists
+    Check if lv name is taken
+    Check if vg has enough free space
+        Create lv
+            lv was created / not created with reason
+-if "lvlist"
+    List logical volumes

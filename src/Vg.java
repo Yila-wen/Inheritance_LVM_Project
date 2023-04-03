@@ -6,15 +6,23 @@ public class Vg extends LVM{
 
     public Vg (String name, Pv a){
         super(name);
-        Pvs.add(a);
+        this.Pvs = new ArrayList<Pv>();
+        this.Pvs.add(a);
+        this.Lvs = new ArrayList<Lv>();
     }
 
     public void addPV(Pv a){
         Pvs.add(a);
     }
+    public ArrayList<Pv> getPvs() {
+        return Pvs;
+    }
 
     public void addLV(Lv a){
         if (a.getHost().getUuid() == this.getUuid()){Lvs.add(a);}
+    }
+    public ArrayList<Lv> getLvs() {
+        return Lvs;
     }
 
     public int getSize(){
